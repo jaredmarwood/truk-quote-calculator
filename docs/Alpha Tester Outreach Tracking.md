@@ -5,9 +5,9 @@
 **Milestone:** Validate Quote Calculator with 5 Real Operators (cmpp6c20g00281kjz6evyg1mo)
 **Job:** Execute operator recruitment (cmpp9sno8006io4jzlx47r0hu)
 
-## Calculator Status: NOT DEPLOYED
+## Calculator Status: LIVE ✅
 
-The alpha quote calculator has not been deployed to a public URL. Outreach is being prepared for immediate launch once deployed.
+The quote calculator is live at https://truk.au with live diesel prices from government feeds (4,747 stations across VIC, NSW, SA, WA).
 
 ---
 
@@ -60,6 +60,9 @@ The alpha quote calculator has not been deployed to a public URL. Outreach is be
 - **Feedback interviews:** Within 3 days of testing
 
 ## Blockers
-- Calculator not deployed to public URL — all testing blocked
-- Facebook posting requires chair's Facebook access
-- SMS requires chair to send (no direct SMS integration)
+- **Facebook posting** — MCP tool has validation issue for platforms field. Need chair to manually post in:
+  - https://www.facebook.com/groups/729040857212829 (Official Brisbane Tippers)
+  - https://www.facebook.com/groups/431416878443912 (Gold Coast Tippers)
+  - https://www.facebook.com/groups/1328982868041525 (Official Brisbane tippers ads)
+- **SMS to SMEA operators** — No direct SMS integration. Chair needs to send SMS to the 5 numbers below
+- **ATA email** — Proposal submitted (decision cmppatus0007no4jzcpdq4qot), awaiting chair approval

@@ -1,0 +1,9 @@
+{
+  "buildCommand": "yarn build",
+  "outputDirectory": "dist/client",
+  "devCommand": "yarn dev",
+  "routes": [
+    { "src": "/assets/(.*)", "dest": "/assets/$1" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
+}

@@ -121,7 +121,7 @@ typed.post(
 
 // --- Serve static build ---
 
-const distDir = path.join(__dirname, "..", "client");
+const distDir = path.resolve(__dirname, "..", "..", "dist", "client");
 
 // Serve Vite static build for all non-API routes (SPA fallback to index.html)
 await app.register(fastifyStatic, {
