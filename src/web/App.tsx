@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 
 interface EquipmentRow {
   id: string
@@ -74,9 +74,23 @@ export default function App() {
     consumption: '35',
     dieselPrice: '1.80',
     avgSpeed: '80',
-    equipment: [{ ...defaultEquipment(), type: 'Dump Trailer' }],
+    equipment: [{ ...defaultEquipment(), type: 'Dump Trailer', hourlyRate: 150 }],
     labourRate: '85',
   })
+
+  // Fetch live diesel price from backend API on mount
+  useEffect(() => {
+    fetch('/api/fuel-price')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.pricePerL) {
+          setInputs((prev) => ({ ...prev, dieselPrice: data.pricePerL.toFixed(2) }))
+        }
+      })
+      .catch(() => {
+        // If API is unavailable, keep the default 1.80
+      })
+  }, [])
 
   const result = calculate(inputs)
 
