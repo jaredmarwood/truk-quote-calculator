@@ -12,6 +12,7 @@ import { calculateQuote, QuoteRequestSchema, QuoteResponseSchema } from "./calcu
 import { fetchFuelPrice, type FuelPriceResponse } from "../lib/fuelwatch.js";
 
 import { fileURLToPath } from "url";
+import { existsSync, readFileSync } from "fs";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -122,6 +123,19 @@ typed.post(
 // --- Serve static build ---
 
 const distDir = path.resolve(__dirname, "..", "..", "dist", "client");
+const contentDir = path.resolve(__dirname, "..", "..", "content");
+
+// --- Serve static blog pages ---
+// Maps /blog/slug → content/blog/slug.html (before SPA fallback)
+app.get("/blog/:slug", async (request, reply) => {
+  const slug = (request.params as { slug: string }).slug;
+  const filePath = path.join(contentDir, "blog", `${slug}.html`);
+  if (!existsSync(filePath)) {
+    return reply.code(404).type("application/json").send({ error: "Blog post not found" });
+  }
+  const html = readFileSync(filePath, "utf-8");
+  return reply.type("text/html; charset=utf-8").send(html);
+});
 
 // Serve Vite static build for all non-API routes (SPA fallback to index.html)
 await app.register(fastifyStatic, {
