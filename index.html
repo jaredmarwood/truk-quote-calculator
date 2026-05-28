@@ -6,12 +6,14 @@
   <title>Truk</title>
   <meta name="description" content="Achieve Real-time Fuel Data Accuracy" />
   <!-- Google tag (gtag.js) — GA4 analytics for quote calculator -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <!-- MEASUREMENT_ID is injected at build time by Vite -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=__GA_MEASUREMENT_ID__"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
+    // MEASUREMENT_ID injected at build time
     gtag('js', new Date());
-    gtag('config', 'G-XXXXXXXXXX', { send_page_view: false });
+    gtag('config', '__GA_MEASUREMENT_ID__', { send_page_view: false });
   </script>
   <style>body { margin: 0; font-family: system-ui, sans-serif; background: #0f172a; color: #f1f5f9; }</style>
 </head>

@@ -5,18 +5,20 @@
  * All events are defensive — if gtag is not loaded (property not connected,
  * ad blocker, etc.) the app continues to work normally.
  *
+ * Configuration: the MEASUREMENT_ID is injected at build time by Vite's `define`
+ * plugin from the `.env.local` file.  The file is excluded from version control
+ * so the real GA4 property ID never lands in git.
+ *
+ * Default fallback: G-XXXXXXXXXX (no-op until connected).
+ *
  * Events tracked:
- * - page_view          — calculator page loaded
- * - quote_input        — any input field changed (field name + value)
- * - quote_calculate    — a complete quote was produced (fire on every result change)
+ * - page_view          — page loaded (sent via gtag config)
+ * - calculator_start   — user enters values in calculator (first input change)
+ * - quote_complete     — a complete quote result is computed (user sees results)
+ * - sign_up_click      — user clicks sign up / get started button
  * - quote_equip_add    — user added equipment row
  * - quote_equip_remove — user removed equipment row
- *
- * Configuration: replace MEASUREMENT_ID with the GA4 property ID once
- * the chair connects a GA4 property in the marwood admin UI.
  */
-
-const MEASUREMENT_ID = 'G-XXXXXXXXXX' // TODO: replace with real GA4 measurement ID after chair connects property
 
 declare global {
   interface Window {
@@ -25,8 +27,11 @@ declare global {
       targetId: string,
       config?: Record<string, unknown>
     ) => void
+    dataLayer?: Record<string, unknown>[]
   }
 }
+
+const MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID || 'G-XXXXXXXXXX'
 
 /** Fire an analytics event. Silently no-ops if gtag not available. */
 export function trackEvent(
@@ -38,35 +43,40 @@ export function trackEvent(
 }
 
 /** Fire a page_view event. */
-export function trackPageView(pageTitle?: string): void {
+export function trackPageView(pageTitle?: string, pagePath?: string): void {
   if (typeof window.gtag !== 'function') return
   window.gtag('config', MEASUREMENT_ID, {
     page_title: pageTitle || 'Quote Calculator',
-    page_path: window.location.pathname,
+    page_path: pagePath || window.location.pathname,
   })
 }
 
-/** Called when any input field changes. */
-export function trackQuoteInput(
+/** Called when the first calculator input is changed (session start). */
+export function trackCalculatorStart(
   field: string,
   value: string | number
 ): void {
-  trackEvent('quote_input', { field, value })
+  trackEvent('calculator_start', { field, value })
 }
 
 /** Called when a complete quote result is computed. */
-export function trackQuoteCalculate(
+export function trackQuoteComplete(
   fuelCost: number,
   totalCost: number,
   quotedPrice: number,
   equipmentCount: number
 ): void {
-  trackEvent('quote_calculate', {
+  trackEvent('quote_complete', {
     fuel_cost: Math.round(fuelCost * 100) / 100,
     total_cost: Math.round(totalCost * 100) / 100,
     quoted_price: Math.round(quotedPrice * 100) / 100,
     equipment_count: equipmentCount,
   })
+}
+
+/** Called when user clicks sign up / get started. */
+export function trackSignUpClick(source: string = 'calculator'): void {
+  trackEvent('sign_up_click', { source })
 }
 
 /** Called when user adds an equipment row. */
@@ -77,4 +87,17 @@ export function trackEquipAdd(): void {
 /** Called when user removes an equipment row. */
 export function trackEquipRemove(): void {
   trackEvent('quote_equip_remove')
+}
+
+/** Called when user submits passive feedback (star rating + optional comment). */
+export function trackFeedbackSubmit(
+  rating: number,
+  comment: string,
+  sentiment: 'positive' | 'neutral' | 'negative'
+): void {
+  trackEvent('feedback_submit', {
+    rating,
+    comment: comment || undefined,
+    sentiment,
+  })
 }

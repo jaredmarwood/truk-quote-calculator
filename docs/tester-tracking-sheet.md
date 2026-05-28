@@ -1,59 +1,101 @@
-# Tester Tracking Sheet — Inbound Quote Calculator
+# Tester Tracking Sheet — Quote Calculator Round 2 Validation
 
-**Job:** Schedule and manage inbound operator test sessions
+**Job:** Validate Quote Calculator with 5 Real Operators (Round 2)
+**Milestone:** cmppcv2zv00cco4jz5feei4sw
 **Owner:** Priya (QA Tester)
-**Purpose:** Track operators who self-signup via inbound channels. Include source attribution for measuring which content drives tester engagement.
+**Coordinator:** Maeve (OPS — session scheduling)
+**Purpose:** Track 5 operators through recruitment → live session → feedback report. Directed 1-on-1 sessions model (Round 2).
 
 ---
 
-## Current Status: ROLLING — Tracking Active
+## Current Status: READY — Waiting for Recruitment
 
-Testing follows an inbound model: operators find the calculator through SEO, blog content, and social channels, then self-signup for feedback via a survey link.
+Round 2 uses **directed 1-on-1 testing sessions**. 5 slots allocated.
 
-**Survey link to be created:** [TBD — Google Form / Typeform]
-**Owner of survey:** Maeve (OPS)
+**Templates prepared by Priya (QA):** 2026-07-29
+- `docs/feedback-report-template.md` — Individual report template (5 sections + summary)
+- `docs/feedback-interview-template.md` — Live interview script for 30-min sessions
+- `docs/tester-tracking-sheet.md` — Master tracking sheet + validation scorecard
+- `docs/feedback-reports/` — Directory created for filing completed reports
+
+| # | Tester Name | Company | Phone | Email | State | Fleet Size | Current Method | Source | Recruited? | Session Scheduled? | Session Done? | Report Filed? | Status |
+|---|-------------|---------|-------|-------|-------|------------|----------------|--------|------------|--------------------|---------------|---------------|--------|
+| 1 | — | — | — | — | — | — | — | — | ☐ | ☐ | ☐ | ☐ | OPEN |
+| 2 | — | — | — | — | — | — | — | — | ☐ | ☐ | ☐ | ☐ | OPEN |
+| 3 | — | — | — | — | — | — | — | — | ☐ | ☐ | ☐ | ☐ | OPEN |
+| 4 | — | — | — | — | — | — | — | — | ☐ | ☐ | ☐ | ☐ | OPEN |
+| 5 | — | — | — | — | — | — | — | — | ☐ | ☐ | ☐ | ☐ | OPEN |
+
+### Status Codes
+
+| Code | Meaning |
+|------|---------|
+| OPEN | Slot available, no tester identified |
+| CONTACTED | Reached out (email/phone/social), awaiting reply |
+| CONFIRMED | Tester agreed to participate, session time scheduled |
+| SESSION DONE | 30-min live session complete, notes recorded |
+| REPORT FILED | Feedback report saved as `docs/feedback-reports/Feedback Report — [Name].md` |
+| COMPLETE | All steps done for this tester |
+
+### Session Pre-Checklist (fill per tester when CONFIRMED)
+
+- [ ] Welcome email sent with calculator URL and session details
+- [ ] Operator confirmed attendance
+- [ ] Priya has operator's test case (real route distance, consumption rate, diesel price)
+- [ ] Session link/schedule shared (video or phone)
 
 ---
 
-## Inbound Tester Tracker
+## Validation Criteria Scorecard
 
-| # | Name | Company | Phone | Email | State | Source | Survey Done? | Callback? | Callback Date | Session Notes | Status |
-|---|------|---------|-------|-------|-------|--------|--------------|-----------|---------------|---------------|--------|
-| 1 | — | — | — | — | — | — | ☐ | ☐ | — | — | OPEN |
-| 2 | — | — | — | — | — | — | ☐ | ☐ | — | — | OPEN |
-| 3 | — | — | — | — | — | — | ☐ | ☐ | — | — | OPEN |
-| 4 | — | — | — | — | — | — | ☐ | ☐ | — | — | OPEN |
-| 5 | — | — | — | — | — | — | ☐ | ☐ | — | — | OPEN |
-| 6 | — | — | — | — | — | — | ☐ | ☐ | — | — | OPEN |
-| 7 | — | — | — | — | — | — | ☐ | ☐ | — | — | OPEN |
-| 8 | — | — | — | — | — | — | ☐ | ☐ | — | — | OPEN |
-| 9 | — | — | — | — | — | — | ☐ | ☐ | — | — | OPEN |
-| 10 | — | — | — | — | — | — | ☐ | ☐ | — | — | OPEN |
+| Criterion | Target | Current | Status |
+|-----------|--------|---------|--------|
+| Operators confirm confidence in fuel cost quotes | 4/5 | 0/5 | ☐ |
+| Operators complete full quote end-to-end | 3/5 | 0/5 | ☐ |
+| Specific improvement suggestions collected | 3+ total | 0 | ☐ |
+| Willingness to pay data documented | All 5 | 0/5 | ☐ |
 
-**Source options:**
-- **Landing page** — found via truk.au/calculator (direct / bookmark / shared link)
-- **Organic search** — found via Google search for 'truck fuel cost calculator' etc.
-- **LinkedIn** — found via Truk's LinkedIn company page posts
-- **Facebook / Social group** — found via Facebook trucking groups or Truk social posts
-- **Blog** — found via blog post CTA
-- **Other** — specify in notes
+### Per-Tester Confidence Scores
+
+| Tester | Confidence (1-5) | Completed Quote? (Y/N) | Improvement Suggestion(s) | WTP (Yes/No/Maybe) | Fair Price |
+|--------|-------------------|------------------------|---------------------------|---------------------|------------|
+| 1 | — | — | — | — | — |
+| 2 | — | — | — | — | — |
+| 3 | — | — | — | — | — |
+| 4 | — | — | — | — | — |
+| 5 | — | — | — | — | — |
 
 ---
 
-## Calculator Reference for Testers
+## Calculator Reference (for Priya's verification before sessions)
 
-**URL:** [truk.au/calculator](https://truk.au/calculator) — no signup required
+**URL:** truk.au/calculator — no signup required
 
-Operators arrive here from:
-1. **Direct URL** — they type or bookmark truk.au/calculator
-2. **SEO landing page** — found on Google searching for truck fuel cost calculators
-3. **Blog posts** — klik a CTA in one of Truk's owner-operator pain-point articles
-4. **LinkedIn posts** — klik the calculator link in Truk's company page posts
-5. **Social groups** — klik from a post in a trucking community group
+**Test case:**
+- Distance: 500 km
+- Consumption: 35 L/100km
+- Diesel Price: $0.65/L
+- Expected fuel cost: **$113.75**
+- Formula: (500 / 100) × 35 × 0.65 = $113.75
+- Status: ✅ Verified — API returns `"fuelCost": 113.75`
 
-All operators land on the same calculator. The source field above is logged manually when the survey response comes in (if the source was mentioned) or inferred from the survey entry method.
+---
 
-**Key input fields available:**
+## Feedback Report Filing
+
+Completed reports go in: `docs/feedback-reports/Feedback Report — [Operator Name].md`
+
+**Filing steps:**
+1. Create `docs/feedback-reports/` directory if it doesn't exist
+2. Save report with operator's name in filename
+3. Update this tracking sheet — mark Session Done + Report Filed
+4. Update Validation Criteria Scorecard with this tester's data
+5. Produce as Knowledge document via `produce_document`
+
+---
+
+## Key Input Fields Available in Calculator
+
 - Diesel price (live, auto-populated from government feeds)
 - Equipment selector (truck/machinery dropdown with fuel consumption data)
 - Job name (free text)
@@ -64,51 +106,5 @@ All operators land on the same calculator. The source field above is logged manu
 
 ---
 
-## Status Codes
-
-| Code | Meaning |
-|------|---------|
-| OPEN | Slot available, no tester assigned |
-| SURVEY SUBMITTED | Operator completed the async survey |
-| CALLBACK SCHEDULED | Operator opted into phone callback, time agreed |
-| CALLBACK DONE | Phone callback complete, notes recorded |
-| REPORT FILED | Feedback incorporated into monthly report |
-| COMPLETE | All steps done for this tester |
-
----
-
-## Source Attribution — How We Track It
-
-Since operators self-signup, we need a way to trace them back to the content that brought them in. Options:
-
-1. **UTM parameters** — Each content piece uses a unique UTM:
-   - Landing page: `?utm_source=truk&utm_medium=direct&utm_campaign=calculator`
-   - LinkedIn: `?utm_source=linkedin&utm_medium=social&utm_campaign=calculator`
-   - Blog: `?utm_source=blog&utm_medium=content&utm_campaign=calculator`
-   - Facebook: `?utm_source=facebook&utm_medium=social&utm_campaign=calculator`
-
-2. **Survey hidden field** — Google Forms / Typeform can capture UTM params via the URL, so the survey response includes the source automatically.
-
-3. **Analytics cross-reference** — Declan can check GA4 traffic source reports to verify self-reported sources.
-
-**Owner of UTM setup:** Declan (Tech)
-**Owner of source logging:** Priya (QA) / Maeve (OPS)
-
----
-
-## Monthly Source Summary Template
-
-When compiling the monthly feedback report:
-
-| Source | Visitors (analytics) | Survey responses | Callback rate | Top converting source |
-|--------|---------------------|------------------|---------------|----------------------|
-| Landing page | — | — | — | — |
-| Organic search | — | — | — | — |
-| LinkedIn | — | — | — | — |
-| Facebook | — | — | — | — |
-| Blog | — | — | — | — |
-
----
-
-**Updated by:** Tye (Marketing) — 2026-08-01
-**Original document by:** Priya (QA Tester) — 2026-07-21
+**Updated by:** Priya (QA Tester) — 2026-07-21
+**Milestone:** cmppcv2zv00cco4jz5feei4sw (Round 2 — Directed Sessions)

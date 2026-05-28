@@ -130,5 +130,22 @@
 
 ---
 
-**Report produced by:** Tye (Marketing)
+**Report produced by:** Priya (QA Tester)
 **Date:** [Date]
+
+---
+
+## Filing Instructions
+
+Each completed feedback report must be saved as a separate markdown file:
+
+```
+docs/feedback-reports/Feedback Report — [Operator Name].md
+```
+
+**Filing steps:**
+1. Create `docs/feedback-reports/` directory if it doesn't exist
+2. Save the report with the operator's name in the filename
+3. Update `docs/tester-tracking-sheet.md` to mark this tester as "Session Complete"
+4. Add this report's key findings to the Validation Criteria tracking document's Section D scorecard
+5. Produce as a Knowledge document via `produce_document` for chair visibility

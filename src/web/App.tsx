@@ -5,6 +5,7 @@ import {
   trackQuoteComplete,
   trackEquipAdd,
   trackEquipRemove,
+  trackFeedbackSubmit,
 } from './ga4'
 
 interface EquipmentRow {
@@ -85,6 +86,10 @@ export default function App() {
     labourRate: '85',
   })
 
+  const [userRating, setUserRating] = useState<number | null>(null)
+  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false)
+  const [feedbackText, setFeedbackText] = useState('')
+
   // Track previous result to avoid re-firing quote_calculate on every re-render
   const prevResultRef = useRef<string>('')
 
@@ -141,6 +146,13 @@ export default function App() {
       equipment: prev.equipment.filter((e) => e.id !== id),
     }))
     trackEquipRemove()
+  }
+
+  const submitFeedback = (rating: number) => {
+    setUserRating(rating)
+    const sentiment = rating >= 4 ? 'positive' : rating >= 3 ? 'neutral' : 'negative'
+    trackFeedbackSubmit(rating, feedbackText, sentiment)
+    setFeedbackSubmitted(true)
   }
 
   const fmt = (n: number) => `$${n.toFixed(2)}`
@@ -221,6 +233,42 @@ export default function App() {
           <span>Quoted Price</span><span style={{ fontSize: 22 }}>{fmt(result.quotedPrice)}</span>
         </div>
       </section>
+      {/* Passive Feedback */}
+      {!feedbackSubmitted ? (
+        <section style={styles.card}>
+          <h2 style={styles.h2}>How helpful was this quote?</h2>
+          <div style={styles.starRow}>
+            {[1, 2, 3, 4, 5].map((star) => (
+              <button
+                key={star}
+                style={{
+                  ...styles.starBtn,
+                  color: userRating !== null && star <= userRating ? '#00d4aa' : '#4a4a5a',
+                  background: 'transparent',
+                }}
+                onClick={() => submitFeedback(star)}
+                aria-label={`${star} star${star > 1 ? 's' : ''}`}
+              >
+                {userRating !== null && star <= userRating ? '★' : '☆'}
+              </button>
+            ))}
+          </div>
+          {userRating !== null && (
+            <input
+              style={{ ...styles.input, marginTop: 12, width: '100%', boxSizing: 'border-box' }}
+              placeholder="What could we improve? (optional)"
+              value={feedbackText}
+              onChange={(e) => setFeedbackText(e.target.value)}
+              maxLength={500}
+            />
+          )}
+        </section>
+      ) : (
+        <section style={styles.card}>
+          <h2 style={styles.h2}>Thanks for your feedback!</h2>
+          <p style={{ color: '#a0a0b8', fontSize: 14, margin: 0 }}>Your input helps us improve the calculator for everyone.</p>
+        </section>
+      )}
     </div>
   )
 }
@@ -252,6 +300,8 @@ const styles: Record<string, React.CSSProperties> = {
   eqInput: { flex: 1, background: '#1a1a2e', border: '1px solid #0f3460', borderRadius: 8, padding: '10px 12px', color: '#e0e0e0', fontSize: 15, outline: 'none' },
   addBtn: { width: '100%', padding: 10, background: '#0f3460', color: '#00d4aa', border: 'none', borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: 'pointer', marginTop: 4 },
   removeBtn: { width: 32, height: 32, background: '#e94560', color: '#fff', border: 'none', borderRadius: 8, fontSize: 14, cursor: 'pointer', flexShrink: 0 },
+  starRow: { display: 'flex', gap: 8, marginBottom: 4 },
+  starBtn: { fontSize: 28, padding: '4px 6px', lineHeight: 1 },
   resultRow: { display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #0f346044' },
   divider: { borderTop: '2px solid #00d4aa', marginTop: 4 },
   totalRow: { fontSize: 18, fontWeight: 700, color: '#00d4aa', paddingTop: 12 },

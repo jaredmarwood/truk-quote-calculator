@@ -186,7 +186,11 @@ _________________________________________________________________
 
 **Completed by:** Priya — [date]
 **Report saved as:** "Feedback Report — [Tester Name].md"
-**Individual report filed in:** docs/feedback-reports/
+**Individual report filed in:** docs/feedback-reports/[Tester Name].md
+**After saving:**
+1. Update tester-tracking-sheet.md → mark "Session Complete"
+2. Update Validation Criteria scorecard (Section D) with this tester's scores
+3. Produce document via `produce_document` for chair visibility
 
 ---
 
