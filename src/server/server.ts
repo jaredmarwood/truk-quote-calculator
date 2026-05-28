@@ -12,7 +12,7 @@ import { calculateQuote, QuoteRequestSchema, QuoteResponseSchema } from "./calcu
 import { fetchFuelPrice, type FuelPriceResponse } from "../lib/fuelwatch.js";
 
 import { fileURLToPath } from "url";
-import { existsSync, readFileSync } from "fs";
+import { existsSync, readFileSync, writeFileSync, mkdirSync } from "fs";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -117,6 +117,63 @@ typed.post(
     } catch (err) {
       return { error: "Validation error" };
     }
+  },
+);
+
+// --- Passive Feedback ---
+
+const FEEDBACK_DIR = path.resolve(__dirname, "..", "..", "data");
+const FEEDBACK_FILE = path.join(FEEDBACK_DIR, "feedback.json");
+
+typed.post(
+  "/api/feedback",
+  {
+    schema: {
+      body: z.object({
+        rating: z.number().min(1).max(5),
+        comment: z.string().max(500).optional(),
+        sentiment: z.enum(["positive", "neutral", "negative"]),
+      }),
+      response: {
+        200: z.object({ status: z.literal("ok") }),
+        400: z.object({ error: z.string() }),
+      },
+    },
+  },
+  async (req) => {
+    // Ensure data directory exists
+    if (!existsSync(FEEDBACK_DIR)) {
+      mkdirSync(FEEDBACK_DIR, { recursive: true });
+    }
+
+    // Read existing feedback or start empty array
+    let entries: Array<{
+      id: string;
+      rating: number;
+      comment: string;
+      sentiment: string;
+      submittedAt: string;
+    }> = [];
+    if (existsSync(FEEDBACK_FILE)) {
+      try {
+        entries = JSON.parse(readFileSync(FEEDBACK_FILE, "utf-8"));
+      } catch {
+        entries = [];
+      }
+    }
+
+    const entry = {
+      id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+      rating: req.body.rating,
+      comment: req.body.comment || "",
+      sentiment: req.body.sentiment,
+      submittedAt: new Date().toISOString(),
+    };
+
+    entries.push(entry);
+    writeFileSync(FEEDBACK_FILE, JSON.stringify(entries, null, 2), "utf-8");
+
+    return { status: "ok" as const };
   },
 );
 

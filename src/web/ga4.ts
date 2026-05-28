@@ -18,6 +18,7 @@
  * - sign_up_click      — user clicks sign up / get started button
  * - quote_equip_add    — user added equipment row
  * - quote_equip_remove — user removed equipment row
+ * - quote_feedback     — user submitted star rating + optional comment
  */
 
 declare global {
@@ -89,15 +90,15 @@ export function trackEquipRemove(): void {
   trackEvent('quote_equip_remove')
 }
 
-/** Called when user submits passive feedback (star rating + optional comment). */
+/** Called when user submits passive feedback on the results page. */
 export function trackFeedbackSubmit(
   rating: number,
   comment: string,
   sentiment: 'positive' | 'neutral' | 'negative'
 ): void {
-  trackEvent('feedback_submit', {
+  trackEvent('quote_feedback', {
     rating,
-    comment: comment || undefined,
+    comment: comment || '',
     sentiment,
   })
 }

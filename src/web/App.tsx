@@ -89,6 +89,7 @@ export default function App() {
   const [userRating, setUserRating] = useState<number | null>(null)
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false)
   const [feedbackText, setFeedbackText] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   // Track previous result to avoid re-firing quote_calculate on every re-render
   const prevResultRef = useRef<string>('')
@@ -148,10 +149,32 @@ export default function App() {
     trackEquipRemove()
   }
 
-  const submitFeedback = (rating: number) => {
+  const submitFeedback = async (rating: number) => {
+    if (isSubmitting) return
+    setIsSubmitting(true)
     setUserRating(rating)
     const sentiment = rating >= 4 ? 'positive' : rating >= 3 ? 'neutral' : 'negative'
     trackFeedbackSubmit(rating, feedbackText, sentiment)
+
+    // Persist feedback to backend (best-effort — UI doesn't fail if backend is down)
+    try {
+      await fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          rating,
+          comment: feedbackText,
+          sentiment,
+        }),
+      })
+    } catch {
+      // Backend unavailable — feedback already tracked via GA4, silently continue
+    }
+
+    setIsSubmitting(false)
+  }
+
+  const dismissFeedback = () => {
     setFeedbackSubmitted(true)
   }
 
@@ -247,6 +270,7 @@ export default function App() {
                   background: 'transparent',
                 }}
                 onClick={() => submitFeedback(star)}
+                disabled={isSubmitting}
                 aria-label={`${star} star${star > 1 ? 's' : ''}`}
               >
                 {userRating !== null && star <= userRating ? '★' : '☆'}
@@ -254,13 +278,18 @@ export default function App() {
             ))}
           </div>
           {userRating !== null && (
-            <input
-              style={{ ...styles.input, marginTop: 12, width: '100%', boxSizing: 'border-box' }}
-              placeholder="What could we improve? (optional)"
-              value={feedbackText}
-              onChange={(e) => setFeedbackText(e.target.value)}
-              maxLength={500}
-            />
+            <>
+              <input
+                style={{ ...styles.input, marginTop: 12, width: '100%', boxSizing: 'border-box' }}
+                placeholder="What could we improve? (optional)"
+                value={feedbackText}
+                onChange={(e) => setFeedbackText(e.target.value)}
+                maxLength={500}
+              />
+              <button style={{ ...styles.addBtn, marginTop: 8 }} onClick={dismissFeedback}>
+                Close
+              </button>
+            </>
           )}
         </section>
       ) : (
