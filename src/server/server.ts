@@ -1,5 +1,7 @@
 import cors from "@fastify/cors";
 import Fastify, { type FastifyInstance } from "fastify";
+import fastifyStatic from "@fastify/static";
+import path from "path";
 import {
   serializerCompiler,
   validatorCompiler,
@@ -8,6 +10,10 @@ import {
 import { z } from "zod";
 import { calculateQuote, QuoteRequestSchema, QuoteResponseSchema } from "./calculator.js";
 import { fetchFuelPrice, type FuelPriceResponse } from "../lib/fuelwatch.js";
+
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = Fastify({ logger: true, trustProxy: true });
 app.setValidatorCompiler(validatorCompiler);
@@ -112,6 +118,26 @@ typed.post(
     }
   },
 );
+
+// --- Serve static build ---
+
+const distDir = path.join(__dirname, "..", "client");
+
+// Serve Vite static build for all non-API routes (SPA fallback to index.html)
+await app.register(fastifyStatic, {
+  root: distDir,
+  prefix: "/",
+  serve: true,
+  wildcard: false,
+});
+
+// SPA fallback: route all remaining GET requests to index.html (but not /api/*)
+app.setNotFoundHandler(async (request, reply) => {
+  if (request.url.startsWith("/api/")) {
+    return reply.code(404).send({ error: "Not found" });
+  }
+  return reply.type("text/html").sendFile("index.html");
+});
 
 const port = Number(process.env.PORT ?? 3001);
 await app.listen({ port, host: "0.0.0.0" });
