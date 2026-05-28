@@ -1,5 +1,5 @@
 import cors from "@fastify/cors";
-import Fastify from "fastify";
+import Fastify, { type FastifyInstance } from "fastify";
 import {
   serializerCompiler,
   validatorCompiler,
@@ -7,6 +7,7 @@ import {
 } from "fastify-type-provider-zod";
 import { z } from "zod";
 import { calculateQuote, QuoteRequestSchema, QuoteResponseSchema } from "./calculator.js";
+import { fetchFuelPrice, type FuelPriceResponse } from "../lib/fuelwatch.js";
 
 const app = Fastify({ logger: true, trustProxy: true });
 app.setValidatorCompiler(validatorCompiler);
@@ -46,8 +47,49 @@ typed.get(
   },
 );
 
-const port = Number(process.env.PORT ?? 3001);
-await app.listen({ port, host: "0.0.0.0" });
+// --- Fuel Price (FuelWatch WA) ---
+
+// In-process cache: last fetched response, refreshed on each request
+let fuelCache: FuelPriceResponse | null = null;
+const FUEL_CACHE_TTL_MS = 2 * 60 * 60 * 1000; // 2 hours
+
+typed.get(
+  "/api/fuel-price",
+  {
+    schema: {
+      response: {
+        200: z.object({
+          pricePerL: z.number(),
+          isCached: z.boolean(),
+          stationCount: z.number(),
+          cachedAt: z.string(),
+        }),
+      },
+    },
+  },
+  async () => {
+    // Serve cached data if within TTL
+    if (fuelCache && Date.now() - new Date(fuelCache.cachedAt).getTime() < FUEL_CACHE_TTL_MS) {
+      return {
+        pricePerL: fuelCache.averagePricePerL ?? 1.8,
+        isCached: fuelCache.isCached,
+        stationCount: fuelCache.metroStationCount,
+        cachedAt: fuelCache.cachedAt,
+      };
+    }
+
+    // Fetch fresh data
+    const result = await fetchFuelPrice(fuelCache ?? undefined);
+    fuelCache = result;
+
+    return {
+      pricePerL: result.averagePricePerL ?? 1.8,
+      isCached: result.isCached,
+      stationCount: result.metroStationCount,
+      cachedAt: result.cachedAt,
+    };
+  },
+);
 
 // --- Quote Calculator ---
 
@@ -70,3 +112,6 @@ typed.post(
     }
   },
 );
+
+const port = Number(process.env.PORT ?? 3001);
+await app.listen({ port, host: "0.0.0.0" });
