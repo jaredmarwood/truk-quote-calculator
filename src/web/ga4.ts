@@ -90,7 +90,13 @@ export function trackEquipRemove(): void {
   trackEvent('quote_equip_remove')
 }
 
-/** Called when user submits passive feedback on the results page. */
+/**
+ * Called when user submits passive feedback on the results page.
+ *
+ * @param rating — 1-5 star rating
+ * @param comment — optional user comment (truncated to 500 chars)
+ * @param sentiment — derived from rating: >=4 positive, >=3 neutral, else negative
+ */
 export function trackFeedbackSubmit(
   rating: number,
   comment: string,
@@ -98,7 +104,7 @@ export function trackFeedbackSubmit(
 ): void {
   trackEvent('quote_feedback', {
     rating,
-    comment: comment || '',
+    comment: (comment || '').slice(0, 500),
     sentiment,
   })
 }
