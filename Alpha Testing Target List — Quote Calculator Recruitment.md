@@ -20,12 +20,14 @@
 - **Facebook:** https://www.facebook.com/truck.australia (22,454 likes)
 - **Email format:** {first name}.{last name}@truck.net.au
 - **Strategy:** Email ATA asking if they'll share our tester invitation with owner-driver/small-fleet members. The ATA's General Council includes elected reps of owner-drivers (1 truck) and small fleet operators (2-5 trucks).
-- **Status:** Email proposed for chair approval (decision cmpp89v5h003xo4jztth9udsr)
+- **Status:** Email proposed for chair approval (decision cmpp89v5h003xo4jztth9udsr); Round 2 outreach active
 - **Specific contacts:**
   - Frank Black — elected owner driver rep on General Council
   - Andrew — board member since 2012, passionate about owner-drivers
   - Sharon — SA Road Transport Association, National Trucking Industry Woman of the Year
   - David Smith — D&S Smith Haulage, 40+ years in transport, past ATA chair
+- **Calculator URL:** https://truk.au (LIVE as of 2026-07-15)
+- **Milestone:** Validate Quote Calculator with 5 Real Operators (Round 2) — cmppcv2zv00cco4jz5feei4sw
 
 ### 2. Facebook Groups — SECONDARY
 - **Official Brisbane Tippers:** https://www.facebook.com/groups/729040857212829
@@ -56,7 +58,8 @@
 - No email addresses found for these SMEA operators — only phone numbers on their listings
 - ATA email proposed for chair approval (outbound_email decision cmpp89v5h003xo4jztth9udsr)
 - Facebook posts require chair's Facebook account access
-- Calculator deployment URL pending — cannot complete testing until chair deploys to public URL
+- **Calculator deployment URL:** https://truk.au (LIVE — no longer pending)
+- **Milestone:** cmppcv2zv00cco4jz5feei4sw (Round 2)
 - When calculator is live, send each operator a personalized SMS/call with the URL
 
 ## Outreach Sequence

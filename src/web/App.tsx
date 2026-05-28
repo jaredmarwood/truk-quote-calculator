@@ -1,4 +1,11 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
+import {
+  trackPageView,
+  trackQuoteInput,
+  trackQuoteCalculate,
+  trackEquipAdd,
+  trackEquipRemove,
+} from './ga4'
 
 interface EquipmentRow {
   id: string
@@ -78,6 +85,14 @@ export default function App() {
     labourRate: '85',
   })
 
+  // Track previous result to avoid re-firing quote_calculate on every re-render
+  const prevResultRef = useRef<string>('')
+
+  // Fire page_view on mount
+  useEffect(() => {
+    trackPageView('Quote Calculator')
+  }, [])
+
   // Fetch live diesel price from backend API on mount
   useEffect(() => {
     fetch('/api/fuel-price')
@@ -94,8 +109,18 @@ export default function App() {
 
   const result = calculate(inputs)
 
+  // Fire quote_calculate event only when result changes (debounce-friendly: fires on every calc)
+  useEffect(() => {
+    const key = [result.fuelCost, result.totalCost, result.quotedPrice, inputs.equipment.length].join('-')
+    if (key !== prevResultRef.current) {
+      prevResultRef.current = key
+      trackQuoteCalculate(result.fuelCost, result.totalCost, result.quotedPrice, inputs.equipment.length)
+    }
+  }, [result, inputs.equipment.length])
+
   const updateField = (field: keyof QuoteInputs, value: string) => {
     setInputs((prev) => ({ ...prev, [field]: value }))
+    trackQuoteInput(field, value)
   }
 
   const updateEquipment = (id: string, field: keyof EquipmentRow, value: string | number) => {
@@ -107,6 +132,7 @@ export default function App() {
 
   const addEquipment = () => {
     setInputs((prev) => ({ ...prev, equipment: [...prev.equipment, defaultEquipment()] }))
+    trackEquipAdd()
   }
 
   const removeEquipment = (id: string) => {
@@ -114,6 +140,7 @@ export default function App() {
       ...prev,
       equipment: prev.equipment.filter((e) => e.id !== id),
     }))
+    trackEquipRemove()
   }
 
   const fmt = (n: number) => `$${n.toFixed(2)}`

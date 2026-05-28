@@ -118,7 +118,7 @@ Tye
 16. What's the #1 thing that would make this indispensable to you?
 17. Would you recommend this to another operator? Why or why not?
 
-## Validation Criteria (from milestone)
+## Validation Criteria (from milestone cmppcv2zv00cco4jz5feei4sw)
 - [ ] 4/5 operators confirm the calculator gives them confidence in fuel cost quotes
 - [ ] 3/5 complete a full quote end-to-end
 - [ ] Collect at least 3 specific improvement suggestions
