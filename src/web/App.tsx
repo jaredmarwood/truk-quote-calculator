@@ -1,8 +1,8 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
 import {
   trackPageView,
-  trackQuoteInput,
-  trackQuoteCalculate,
+  trackCalculatorStart,
+  trackQuoteComplete,
   trackEquipAdd,
   trackEquipRemove,
 } from './ga4'
@@ -114,13 +114,13 @@ export default function App() {
     const key = [result.fuelCost, result.totalCost, result.quotedPrice, inputs.equipment.length].join('-')
     if (key !== prevResultRef.current) {
       prevResultRef.current = key
-      trackQuoteCalculate(result.fuelCost, result.totalCost, result.quotedPrice, inputs.equipment.length)
+      trackQuoteComplete(result.fuelCost, result.totalCost, result.quotedPrice, inputs.equipment.length)
     }
   }, [result, inputs.equipment.length])
 
   const updateField = (field: keyof QuoteInputs, value: string) => {
     setInputs((prev) => ({ ...prev, [field]: value }))
-    trackQuoteInput(field, value)
+    trackCalculatorStart(field, value)
   }
 
   const updateEquipment = (id: string, field: keyof EquipmentRow, value: string | number) => {
