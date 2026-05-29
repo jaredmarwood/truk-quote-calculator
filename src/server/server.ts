@@ -120,6 +120,73 @@ typed.post(
   },
 );
 
+// --- Beta Signup ---
+
+const BETA_DIR = path.resolve(__dirname, "..", "..", "data");
+const BETA_FILE = path.join(BETA_DIR, "beta-signups.json");
+
+typed.post(
+  "/api/beta-signup",
+  {
+    schema: {
+      body: z.object({
+        businessName: z.string().min(1),
+        contactName: z.string().min(1),
+        email: z.string().email(),
+        phone: z.string().optional(),
+        state: z.string().min(2),
+        fleetSize: z.string(),
+        currentMethod: z.string(),
+        sectors: z.string().optional(),
+        notes: z.string().optional(),
+      }),
+      response: {
+        200: z.object({ status: z.literal("ok"), id: z.string() }),
+        400: z.object({ error: z.string() }),
+      },
+    },
+  },
+  async (req) => {
+    if (!existsSync(BETA_DIR)) {
+      mkdirSync(BETA_DIR, { recursive: true });
+    }
+
+    let entries: Array<{
+      id: string;
+      businessName: string;
+      contactName: string;
+      email: string;
+      phone?: string;
+      state: string;
+      fleetSize: string;
+      currentMethod: string;
+      sectors?: string;
+      notes?: string;
+      submittedAt: string;
+      status: "pending" | "invited" | "active";
+    }> = [];
+    if (existsSync(BETA_FILE)) {
+      try {
+        entries = JSON.parse(readFileSync(BETA_FILE, "utf-8"));
+      } catch {
+        entries = [];
+      }
+    }
+
+    const entry = {
+      id: `beta-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+      ...req.body,
+      submittedAt: new Date().toISOString(),
+      status: "pending" as const,
+    };
+
+    entries.push(entry);
+    writeFileSync(BETA_FILE, JSON.stringify(entries, null, 2), "utf-8");
+
+    return { status: "ok" as const, id: entry.id };
+  },
+);
+
 // --- Passive Feedback ---
 
 const FEEDBACK_DIR = path.resolve(__dirname, "..", "..", "data");
@@ -181,6 +248,16 @@ typed.post(
 
 const distDir = path.resolve(__dirname, "..", "..", "dist", "client");
 const contentDir = path.resolve(__dirname, "..", "..", "content");
+
+// --- Serve recruitment page at /recruit ---
+app.get("/recruit", async (_request, reply) => {
+  const filePath = path.join(contentDir, "recruit.html");
+  if (!existsSync(filePath)) {
+    return reply.code(503).type("application/json").send({ error: "Recruitment page not found" });
+  }
+  const html = readFileSync(filePath, "utf-8");
+  return reply.type("text/html; charset=utf-8").send(html);
+});
 
 // --- Serve calculator at /calculator ---
 // Vite HTML inputs preserve their relative path, so calculator lands at src/client/src/web/index.html

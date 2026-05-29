@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Truk — Beta Tester Sign Up</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #1a1a2e;
+      color: #e0e0e0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .container {
+      max-width: 560px;
+      width: 100%;
+      background: #16213e;
+      border-radius: 12px;
+      padding: 32px;
+      border: 1px solid #0f3460;
+    }
+    h1 {
+      font-size: 1.5rem;
+      color: #00d4ff;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      color: #a0a0b0;
+      margin-bottom: 24px;
+      line-height: 1.5;
+      font-size: 0.95rem;
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      font-size: 0.85rem;
+      color: #b0b0c0;
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px 12px;
+      background: #0f3460;
+      border: 1px solid #1a4080;
+      border-radius: 6px;
+      color: #e0e0e0;
+      font-size: 0.95rem;
+      font-family: inherit;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #00d4ff;
+      box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.2);
+    }
+    textarea { resize: vertical; min-height: 60px; }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #00d4ff;
+      color: #1a1a2e;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+    button:hover { background: #00b8d9; }
+    button:disabled {
+      background: #555;
+      cursor: not-allowed;
+    }
+    .success {
+      display: none;
+      text-align: center;
+      padding: 24px;
+    }
+    .success h2 { color: #4caf50; margin-bottom: 8px; }
+    .success p { color: #a0a0b0; line-height: 1.5; }
+    .error-msg {
+      color: #ff6b6b;
+      font-size: 0.85rem;
+      margin-top: 4px;
+      display: none;
+    }
+    .required-note { color: #a0a0b0; font-size: 0.8rem; margin-bottom: 20px; }
+    .calculator-link {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 0.85rem;
+      color: #a0a0b0;
+    }
+    .calculator-link a {
+      color: #00d4ff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="signup-form">
+      <h1>🚛 Join the Truk Beta</h1>
+      <p class="subtitle">Help us build a tool for trucking and earthmoving operators. Test our quote calculator, tell us what works — get early access for free.</p>
+      
+      <form id="beta-form">
+        <div class="form-group">
+          <label for="business-name">Business Name *</label>
+          <input type="text" id="business-name" name="businessName" required placeholder="e.g. Smith Haulage">
+        </div>
+
+        <div class="form-group">
+          <label for="contact-name">Your Name *</label>
+          <input type="text" id="contact-name" name="contactName" required placeholder="First and last name">
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address *</label>
+          <input type="email" id="email" name="email" required placeholder="you@example.com">
+          <div class="error-msg" id="email-error">Please enter a valid email address</div>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone Number (optional)</label>
+          <input type="tel" id="phone" name="phone" placeholder="04XX XXX XXX">
+        </div>
+
+        <div class="form-group">
+          <label for="state">State *</label>
+          <select id="state" name="state" required>
+            <option value="">Select state</option>
+            <option value="NSW">NSW</option>
+            <option value="VIC">VIC</option>
+            <option value="QLD">QLD</option>
+            <option value="WA">WA</option>
+            <option value="SA">SA</option>
+            <option value="TAS">TAS</option>
+            <option value="NT">NT</option>
+            <option value="ACT">ACT</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="fleet-size">Fleet Size *</label>
+          <select id="fleet-size" name="fleetSize" required>
+            <option value="">How many trucks?</option>
+            <option value="1">Just me (1 truck — owner-operator)</option>
+            <option value="2-5">2–5 trucks (small fleet)</option>
+            <option value="6-20">6–20 trucks (medium fleet)</option>
+            <option value="20+">20+ trucks (large fleet)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="current-method">How do you currently track fuel costs on jobs? *</label>
+          <select id="current-method" name="currentMethod" required>
+            <option value="">Select your method</option>
+            <option value="spreadsheet">Spreadsheet (Excel/Sheets)</option>
+            <option value="calculator">Handheld calculator + paper</option>
+            <option value="estimates">Guesstimates / back-of-envelope</option>
+            <option value="software">Fleet management software</option>
+            <option value="other">Other — I'll describe below</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="sectors">What do you haul or your main work type? (optional)</label>
+          <input type="text" id="sectors" name="sectors" placeholder="e.g. earthmoving, freight haulage, tipper, wet hire">
+        </div>
+
+        <div class="form-group">
+          <label for="notes">Anything else you want us to know? (optional)</label>
+          <textarea id="notes" name="notes" placeholder="Biggest pain point with your current method, what you'd like to test, etc."></textarea>
+        </div>
+
+        <div class="required-note">* Required fields. Takes 2 minutes to fill out.</div>
+        <button type="submit" id="submit-btn">Sign Up for Beta</button>
+      </form>
+      
+      <p class="calculator-link">Want to try the calculator now? <a href="/calculator" target="_blank">truk.au/calculator</a> — no signup needed.</p>
+    </div>
+
+    <div class="success" id="success-message">
+      <h2>You're in! 🎉</h2>
+      <p>Thanks for signing up. We'll be in touch within 48 hours with your beta access details and a simple test plan.</p>
+      <p style="margin-top: 16px;">In the meantime, feel free to play with the calculator: <a href="/calculator" style="color: #00d4ff;">truk.au/calculator</a></p>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('beta-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const btn = document.getElementById('submit-btn');
+      const errorMsg = document.getElementById('email-error');
+      
+      // Basic validation
+      const email = document.getElementById('email').value;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        errorMsg.style.display = 'block';
+        return;
+      }
+      errorMsg.style.display = 'none';
+      
+      // Disable button and show loading
+      btn.disabled = true;
+      btn.textContent = 'Submitting...';
+      
+      const formData = {
+        businessName: document.getElementById('business-name').value,
+        contactName: document.getElementById('contact-name').value,
+        email: email,
+        phone: document.getElementById('phone').value,
+        state: document.getElementById('state').value,
+        fleetSize: document.getElementById('fleet-size').value,
+        currentMethod: document.getElementById('current-method').value,
+        sectors: document.getElementById('sectors').value,
+        notes: document.getElementById('notes').value,
+        submittedAt: new Date().toISOString()
+      };
+      
+      try {
+        const response = await fetch('/api/beta-signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
+        
+        if (response.ok) {
+          document.getElementById('signup-form').style.display = 'none';
+          document.getElementById('success-message').style.display = 'block';
+        } else {
+          const data = await response.json();
+          alert('Submission failed: ' + (data.error || 'Please try again'));
+          btn.disabled = false;
+          btn.textContent = 'Sign Up for Beta';
+        }
+      } catch (err) {
+        alert('Connection error. Please try again or email us directly.');
+        btn.disabled = false;
+        btn.textContent = 'Sign Up for Beta';
+      }
+    });
+  </script>
+</body>
+</html>
