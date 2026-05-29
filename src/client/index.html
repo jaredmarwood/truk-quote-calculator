@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Truk — Real-Time Fuel Data Accuracy for Australian Trucking</title>
+  <meta name="description" content="Stop guessing fuel costs. Truk gives Australian trucking operators real-time diesel prices, configurable margins, and branded shareable quotes — all from one mobile-first tool." />
+  <!-- Google tag (gtag.js) — GA4 analytics for landing page -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=__GA_MEASUREMENT_ID__"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted',
+    });
+    gtag('config', '__GA_MEASUREMENT_ID__', { send_page_view: false });
+  </script>
+  <style>body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #1a1a2e; color: #e0e0e0; }</style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/client/main.tsx"></script>
+</body>
+</html>

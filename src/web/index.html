@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quote Calculator — Truk</title>
+  <meta name="description" content="Calculate trucking fuel and equipment costs in real time." />
+  <!-- Google tag (gtag.js) — GA4 analytics for quote calculator -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=__GA_MEASUREMENT_ID__"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted',
+    });
+    gtag('config', '__GA_MEASUREMENT_ID__', { send_page_view: false });
+  </script>
+  <style>body { margin: 0; font-family: system-ui, sans-serif; background: #0f172a; color: #f1f5f9; }</style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/web/main.tsx"></script>
+</body>
+</html>

@@ -182,6 +182,30 @@ typed.post(
 const distDir = path.resolve(__dirname, "..", "..", "dist", "client");
 const contentDir = path.resolve(__dirname, "..", "..", "content");
 
+// --- Serve calculator at /calculator ---
+// Vite HTML inputs preserve their relative path, so calculator lands at src/client/src/web/index.html
+const calculatorDistDir = path.resolve(__dirname, "..", "..", "dist", "client", "src", "web");
+app.get("/calculator", async (_request, reply) => {
+  const filePath = path.join(calculatorDistDir, "index.html");
+  if (!existsSync(filePath)) {
+    return reply.code(503).type("application/json").send({ error: "Calculator build not found" });
+  }
+  const html = readFileSync(filePath, "utf-8");
+  return reply.type("text/html; charset=utf-8").send(html);
+});
+
+// --- Serve dashboard at /dashboard ---
+// Vite HTML inputs preserve their relative path, so dashboard.html lands at src/client/src/client/dashboard.html
+const dashboardDistDir = path.resolve(__dirname, "..", "..", "dist", "client", "src", "client");
+app.get("/dashboard", async (_request, reply) => {
+  const filePath = path.join(dashboardDistDir, "dashboard.html");
+  if (!existsSync(filePath)) {
+    return reply.code(503).type("application/json").send({ error: "Dashboard build not found" });
+  }
+  const html = readFileSync(filePath, "utf-8");
+  return reply.type("text/html; charset=utf-8").send(html);
+});
+
 // --- Serve static blog pages ---
 // Maps /blog/slug → content/blog/slug.html (before SPA fallback)
 app.get("/blog/:slug", async (request, reply) => {
@@ -202,12 +226,18 @@ await app.register(fastifyStatic, {
   wildcard: false,
 });
 
+// Landing page entry — Vite builds src/client/src/client/index.html
+const landingHtmlPath = path.join(distDir, "src", "client", "index.html");
+
 // SPA fallback: route all remaining GET requests to index.html (but not /api/*)
 app.setNotFoundHandler(async (request, reply) => {
   if (request.url.startsWith("/api/")) {
     return reply.code(404).send({ error: "Not found" });
   }
-  return reply.type("text/html").sendFile("index.html");
+  if (!existsSync(landingHtmlPath)) {
+    return reply.code(503).type("application/json").send({ error: "Landing page not built" });
+  }
+  return reply.type("text/html").sendFile(landingHtmlPath);
 });
 
 const port = Number(process.env.PORT ?? 3001);

@@ -4,7 +4,7 @@
 
 ---
 
-Right now, the average price of diesel on a forecourt somewhere in Australia is sitting at **$2.28 a litre**. In New South Wales it's $2.25/L, right across in Victoria it's $2.30/L, and if you're out in Perth you'll be looking at $2.34/L. That's from government feeds — Fair Fuel VIC, FuelCheck NSW, SA Fuel Pricing, FuelWatch WA — all of them updated daily, covering nearly 5,000 stations across four states.
+Right now, the average price of diesel on a forecourt somewhere in Australia is sitting at **$2.30 a litre**. In New South Wales it's $2.25/L, right across in Victoria it's $2.41/L, and if you're out in Perth you'll be looking at $2.32/L. That's from government feeds — Fair Fuel VIC, FuelCheck NSW, SA Fuel Pricing, FuelWatch WA — all of them updated daily, covering 4,749 stations across four states.
 
 The thing is, if you're running your business on a spreadsheet, the number you're looking at probably isn't any of those. It's whatever you typed in last Tuesday. Or the week before. Or "about what it was" because you can't be arsed going to the fuelwatch site to check.
 

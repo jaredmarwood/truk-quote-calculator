@@ -30,6 +30,18 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       outDir: "dist/client",
+      rollupOptions: {
+        input: {
+          client: resolve(__dirname, "src", "client", "index.html"),
+          calculator: resolve(__dirname, "src", "web", "index.html"),
+          dashboard: resolve(__dirname, "src", "client", "dashboard.html"),
+        },
+        output: {
+          entryFileNames: "assets/[name]-[hash].js",
+          chunkFileNames: "assets/[name]-[hash].js",
+          assetFileNames: "assets/[name]-[hash][extname]",
+        },
+      },
     },
     resolve: {
       alias: {
