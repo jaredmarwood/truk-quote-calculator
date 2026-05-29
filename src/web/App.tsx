@@ -20,8 +20,10 @@ interface QuoteInputs {
   consumption: string
   dieselPrice: string
   avgSpeed: string
+  marginPercent: string
   equipment: EquipmentRow[]
   labourRate: string
+  businessName: string
 }
 
 interface QuoteResult {
@@ -30,6 +32,7 @@ interface QuoteResult {
   labourCost: number
   totalCost: number
   marginPercent: number
+  marginAmount: number
   quotedPrice: number
 }
 
@@ -42,12 +45,13 @@ const defaultEquipment = (): EquipmentRow => ({
   hourlyRate: 0,
 })
 
-function calculate(inputs: QuoteInputs): QuoteResult {
+const calculate = (inputs: QuoteInputs): QuoteResult => {
   const distance = parseFloat(inputs.distance) || 0
   const consumption = parseFloat(inputs.consumption) || 0
   const dieselPrice = parseFloat(inputs.dieselPrice) || 0
   const avgSpeed = parseFloat(inputs.avgSpeed) || 1
   const labourRate = parseFloat(inputs.labourRate) || 0
+  const marginPercent = parseFloat(inputs.marginPercent) || 15
 
   const fuelCost = (distance / 100) * consumption * dieselPrice
 
@@ -63,8 +67,8 @@ function calculate(inputs: QuoteInputs): QuoteResult {
   const equipmentTotal = equipmentCosts.reduce((s, e) => s + e.cost, 0)
   const labourCost = labourRate * tripHours
   const totalCost = fuelCost + equipmentTotal + labourCost
-  const marginPercent = 15
-  const quotedPrice = totalCost * (1 + marginPercent / 100)
+  const marginAmount = totalCost * marginPercent / 100
+  const quotedPrice = totalCost + marginAmount
 
   return {
     fuelCost,
@@ -72,19 +76,42 @@ function calculate(inputs: QuoteInputs): QuoteResult {
     labourCost,
     totalCost,
     marginPercent,
+    marginAmount,
     quotedPrice,
   }
 }
 
 export default function App() {
-  const [inputs, setInputs] = useState<QuoteInputs>({
-    distance: '500',
-    consumption: '35',
-    dieselPrice: '1.80',
-    avgSpeed: '80',
-    equipment: [{ ...defaultEquipment(), type: 'Dump Trailer', hourlyRate: 150 }],
-    labourRate: '85',
-  })
+  // Load from localStorage or use defaults
+  const loadFromStorage = (): QuoteInputs => {
+    try {
+      const saved = localStorage.getItem('truk-calculator')
+      if (saved) return JSON.parse(saved)
+    } catch {
+      // Corrupt data — fall through to defaults
+    }
+    return {
+      distance: '500',
+      consumption: '35',
+      dieselPrice: '1.80',
+      avgSpeed: '80',
+      marginPercent: '15',
+      equipment: [{ ...defaultEquipment(), type: 'Dump Trailer', hourlyRate: 150 }],
+      labourRate: '85',
+      businessName: '',
+    }
+  }
+
+  const [inputs, setInputs] = useState<QuoteInputs>(loadFromStorage)
+
+  // Persist to localStorage whenever inputs change
+  useEffect(() => {
+    try {
+      localStorage.setItem('truk-calculator', JSON.stringify(inputs))
+    } catch {
+      // Storage full or unavailable — silently continue
+    }
+  }, [inputs])
 
   const [userRating, setUserRating] = useState<number | null>(null)
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false)
@@ -226,6 +253,11 @@ export default function App() {
         <button style={styles.addBtn} onClick={addEquipment}>+ Add Equipment</button>
       </section>
 
+      <section style={styles.card}>
+        <h2 style={styles.h2}>Margin</h2>
+        <Field label="Margin (%)" value={inputs.marginPercent} onChange={(v) => updateField('marginPercent', v)} type="number" />
+      </section>
+
       {/* Labour */}
       <section style={styles.card}>
         <h2 style={styles.h2}>Labour</h2>
@@ -250,7 +282,7 @@ export default function App() {
           <span>Total Cost</span><span>{fmt(result.totalCost)}</span>
         </div>
         <div style={styles.resultRow}>
-          <span>Margin ({result.marginPercent}%)</span><span>+{fmt(result.totalCost * result.marginPercent / 100)}</span>
+          <span>Margin ({result.marginPercent}%)</span><span>+{fmt(result.marginAmount)}</span>
         </div>
         <div style={{ ...styles.resultRow, ...styles.totalRow }}>
           <span>Quoted Price</span><span style={{ fontSize: 22 }}>{fmt(result.quotedPrice)}</span>
