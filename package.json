@@ -20,6 +20,7 @@
     "fastify-type-provider-zod": "^5.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-router-dom": "^7.16.0",
     "zod": "^4.0.0"
   },
   "devDependencies": {

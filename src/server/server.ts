@@ -306,6 +306,16 @@ await app.register(fastifyStatic, {
 // Landing page entry — Vite builds src/client/src/client/index.html
 const landingHtmlPath = path.join(distDir, "src", "client", "index.html");
 
+// Root landing page — beta recruitment (primary organic conversion path)
+app.get("/", async (_request, reply) => {
+  const filePath = path.join(contentDir, "recruit.html");
+  if (!existsSync(filePath)) {
+    return reply.code(503).type("application/json").send({ error: "Recruitment page not found" });
+  }
+  const html = readFileSync(filePath, "utf-8");
+  return reply.type("text/html; charset=utf-8").send(html);
+});
+
 // SPA fallback: route all remaining GET requests to index.html (but not /api/*)
 app.setNotFoundHandler(async (request, reply) => {
   if (request.url.startsWith("/api/")) {

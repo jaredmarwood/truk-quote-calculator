@@ -2768,6 +2768,34 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-router-dom@npm:^7.16.0":
+  version: 7.16.0
+  resolution: "react-router-dom@npm:7.16.0"
+  dependencies:
+    react-router: "npm:7.16.0"
+  peerDependencies:
+    react: ">=18"
+    react-dom: ">=18"
+  checksum: 10c0/201b816667e17a5da2b4a45859130efcc36776851ab475cd3538dd5c49b03dbac257e453e0d54ee7c245189bb2cf4fc288b6d01da2282983c03acbf880888a3e
+  languageName: node
+  linkType: hard
+
+"react-router@npm:7.16.0":
+  version: 7.16.0
+  resolution: "react-router@npm:7.16.0"
+  dependencies:
+    cookie: "npm:^1.0.1"
+    set-cookie-parser: "npm:^2.6.0"
+  peerDependencies:
+    react: ">=18"
+    react-dom: ">=18"
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
+  checksum: 10c0/a3d7825c945183dd16f9cb7cf7c16bed859f78cf3049b467d6c9b84bdf0f7357027e821b1f3e187cecfb41e82c0f0bb625432e0ef9aa9d94b778a533204f6b7c
+  languageName: node
+  linkType: hard
+
 "react@npm:^19.0.0":
   version: 19.2.6
   resolution: "react@npm:19.2.6"
@@ -3214,6 +3242,7 @@ __metadata:
     playwright: "npm:^1.60.0"
     react: "npm:^19.0.0"
     react-dom: "npm:^19.0.0"
+    react-router-dom: "npm:^7.16.0"
     tsx: "npm:^4.0.0"
     typescript: "npm:^6.0.0"
     vite: "npm:^8.0.0"
